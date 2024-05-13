@@ -20,7 +20,11 @@ set(SPINNAKER_INCLUDE_DIR "/opt/spinnaker/include" CACHE PATH "Spinnaker Include
 set(SPINNAKER_LIB_DIR "/opt/spinnaker/lib/" CACHE PATH "Spinnaker Libs Directory")
 file(GLOB SPINNAKER_LIB_FILES /opt/spinnaker/lib/*.so)
 
-# OpenCV
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES x86_64 OR x86_32)
+  set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+  find_package(LibUnwind REQUIRED)
+endif()
+
 find_package(OpenCV REQUIRED)
 find_package ( Boost COMPONENTS filesystem system serialization log REQUIRED )
 
@@ -57,7 +61,7 @@ install(TARGETS
 )
 
 target_link_libraries(${PROJECT_NAME} ${SPINNAKER_LIB_FILES})
-ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport OpenCV)
+ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport OpenCV LibUnwind)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

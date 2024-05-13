@@ -4,6 +4,11 @@
 #include <rcpputils/asserts.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/filesystem.hpp>
+#include "Spinnaker.h"
+#include "SpinGenApi/SpinnakerGenApi.h"
+using namespace Spinnaker;
+using namespace Spinnaker::GenApi;
+using namespace Spinnaker::GenICam;
 
 namespace cam_port_manager
 {
@@ -36,7 +41,7 @@ namespace cam_port_manager
         // _load_params();
 
         RCLCPP_INFO(this->get_logger(), "Creating System instance...");
-        _pSystem = Spinnaker::System::GetInstance();
+        _pSystem = System::GetInstance();
         RCLCPP_INFO(this->get_logger(), "Retrieving List of Cameras...");
         _camList = _pSystem->GetCameras();
 
