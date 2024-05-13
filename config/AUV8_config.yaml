@@ -1,0 +1,12 @@
+/cam_port_manager:
+  ros__parameters:
+    # save_path: "THIS IS A PATH"
+    cam_ids:
+      - 19208686
+      - 19208682
+    cam_aliases:
+      - front
+      - bottom
+    default_cam_id: 19208686
+    
+    exposure_time: 1 # 0 defaults to auto
