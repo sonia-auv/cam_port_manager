@@ -9,10 +9,10 @@ namespace cam_port_manager
     public:
         /**
          * @brief Construct a new Camera object
-         * 
-         * @param pCam 
+         *
+         * @param pCam
          */
-        Camera(Spinnaker::CameraPtr pCam);
+        Camera(Spinnaker::CameraPtr pCam, int index);
         ~Camera();
 
         /**
@@ -32,7 +32,16 @@ namespace cam_port_manager
 
         void EndAquisition();
 
+        std::string GetID();
+
+        std::string GetAlias() const { return _alias; }
+        void SetAlias(std::string alias) { _alias = alias; }
+
+        int GetIndex() const { return _index; }
+
     private:
+        int _index;
         Spinnaker::CameraPtr _pCam;
+        std::string _alias;
     };
 }

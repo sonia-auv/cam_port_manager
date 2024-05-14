@@ -3,7 +3,7 @@
 
 namespace cam_port_manager
 {
-    Camera::Camera(Spinnaker::CameraPtr pCam)
+    Camera::Camera(Spinnaker::CameraPtr pCam, int index) : _index(index)
     {
         _pCam = pCam;
         if (_pCam->IsInitialized())
@@ -12,6 +12,7 @@ namespace cam_port_manager
             _pCam->EndAcquisition();
             _pCam->DeInit();
         }
+        _alias = GetID();
     }
 
     Camera::~Camera()
@@ -43,5 +44,17 @@ namespace cam_port_manager
         }
         BOOST_LOG_TRIVIAL(info) << "End Aquisition...";
         _pCam->EndAcquisition();
+    }
+
+    std::string Camera::GetID()
+    {
+        std::string camera_id = std::string(_pCam->GetUniqueID());
+        std::string serial_nb = "SRL_";
+
+        size_t position = camera_id.find(serial_nb) + 4;
+
+        serial_nb = camera_id.substr(position, 8);
+
+        return std::to_string(stoi(serial_nb, nullptr, 16));
     }
 }
