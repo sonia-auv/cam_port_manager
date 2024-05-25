@@ -8,7 +8,11 @@
     cam_aliases:
       - front
       - bottom
-    default_cam_id: 19208686
+    master_cam_id: 19208686
+
+    exposure_time: 0
+
+    is_max_rate: false
 
     # Camera info message details
     image_height: 400

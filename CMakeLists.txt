@@ -11,6 +11,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(image_transport REQUIRED)
+find_package(cv_bridge REQUIRED)
 
 
 # Non ROS Dependencies =============================================
@@ -61,7 +62,7 @@ install(TARGETS
 )
 
 target_link_libraries(${PROJECT_NAME} ${SPINNAKER_LIB_FILES})
-ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport OpenCV LibUnwind)
+ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport OpenCV LibUnwind cv_bridge)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

@@ -1,6 +1,7 @@
 #pragma once
 #include "Spinnaker.h"
 #include "SpinGenApi/SpinnakerGenApi.h"
+#include <opencv2/opencv.hpp>
 
 namespace cam_port_manager
 {
@@ -12,7 +13,7 @@ namespace cam_port_manager
          *
          * @param pCam
          */
-        Camera(Spinnaker::CameraPtr pCam, int index);
+        Camera(Spinnaker::CameraPtr pCam);
         ~Camera();
 
         /**
@@ -32,15 +33,36 @@ namespace cam_port_manager
 
         void EndAquisition();
 
+        cv::Mat GetNextFrame();
+
+        std::string GetEnumValue(std::string name);
+        bool SetEnumValue(std::string name, std::string value);
+
+        bool ExecuteCommand(std::string name);
+
+        float GetFloatValue(std::string name);
+        bool SetFloatValue(std::string name, float value);
+
+        int GetIntValue(std::string name);
+        bool SetIntValue(std::string name, int value);
+
+        bool GetBoolValue(std::string name);
+        bool SetBoolValue(std::string name, bool value);
+
+        std::string GetStringValue(std::string name);
+
         std::string GetID();
 
         std::string GetAlias() const { return _alias; }
         void SetAlias(std::string alias) { _alias = alias; }
 
-        int GetIndex() const { return _index; }
+        bool IsMaster() { return _isMaster; };
+        void SetMaster() { _isMaster = true; };
 
     private:
-        int _index;
+        bool _isMaster = false;
+        Spinnaker::ImagePtr _get_next_image();
+
         Spinnaker::CameraPtr _pCam;
         std::string _alias;
     };
