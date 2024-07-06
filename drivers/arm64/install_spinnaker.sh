@@ -35,21 +35,21 @@ set -o errexit
 
 echo "Installing Spinnaker packages..."
 
-sudo dpkg -i libgentl_*.deb
-sudo dpkg -i libspinnaker_*.deb
-sudo dpkg -i libspinnaker-dev_*.deb
-sudo dpkg -i libspinnaker-c_*.deb
-sudo dpkg -i libspinnaker-c-dev_*.deb
-sudo dpkg -i libspinvideo_*.deb
-sudo dpkg -i libspinvideo-dev_*.deb
-sudo dpkg -i libspinvideo-c_*.deb
-sudo dpkg -i libspinvideo-c-dev_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" libgentl_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" libspinnaker_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" libspinnaker-dev_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" libspinnaker-c_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" libspinnaker-c-dev_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" libspinvideo_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" libspinvideo-dev_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" libspinvideo-c_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" libspinvideo-c-dev_*.deb
 # sudo dpkg -i spinview-qt_*.deb
 # sudo dpkg -i spinview-qt-dev_*.deb
-sudo dpkg -i spinupdate_*.deb
-sudo dpkg -i spinupdate-dev_*.deb
-sudo dpkg -i spinnaker_*.deb
-sudo dpkg -i spinnaker-doc_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" spinupdate_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" spinupdate-dev_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" spinnaker_*.deb
+sudo dpkg -i --instdir="/home/sonia/ssd/spinnaker" spinnaker-doc_*.deb
 
 # echo
 # echo "Would you like to add a udev entry to allow access to USB hardware?"
