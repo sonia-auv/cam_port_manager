@@ -3,7 +3,7 @@
 #include <rcpputils/asserts.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/filesystem.hpp>
-#include <cv_bridge/cv_bridge.h>
+#include <cv_bridge/cv_bridge/cv_bridge.h>
 
 namespace cam_port_manager
 {
