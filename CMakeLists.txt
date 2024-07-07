@@ -62,7 +62,12 @@ install(TARGETS
 )
 
 target_link_libraries(${PROJECT_NAME} ${SPINNAKER_LIB_FILES})
-ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport OpenCV LibUnwind cv_bridge)
+
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES x86_64 OR x86_32)
+  ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport OpenCV LibUnwind cv_bridge)
+else()
+  ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport OpenCV cv_bridge)
+endif()
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
