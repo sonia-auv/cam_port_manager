@@ -4,6 +4,7 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/filesystem.hpp>
 #include <cv_bridge/cv_bridge.h>
+#include "image_transport/image_transport.hpp"
 
 namespace cam_port_manager
 {
@@ -298,6 +299,9 @@ namespace cam_port_manager
 
         std::vector<int64_t> my_ids = _cam_ids();
         bool default_detected = false;
+
+        image_transport::ImageTransport it((rclcpp::Node::SharedPtr)this);
+
         for (size_t i = 0; i < my_ids.size(); i++)
         {
             bool cam_found = false;
@@ -318,7 +322,7 @@ namespace cam_port_manager
 
                     cam_found = true;
 
-                    _publishers_camera_image.push_back(this->create_publisher<sensor_msgs::msg::Image>("/camera_array/" + cam.GetAlias() + "/image_raw", 10));
+                    _publishers_camera_image.push_back(it.advertise("/camera_array/" + cam.GetAlias() + "/image_raw", 10));
 
                     cv::Mat img;
                     _cam_frames.push_back(img);
@@ -426,7 +430,7 @@ namespace cam_port_manager
             imgHeader.frame_id = "cam_" + _cam_aliases().at(i) + "_optical_frame";
             sensor_msgs::msg::Image img;
             cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg(img);
-            _publishers_camera_image[i]->publish(img);
+            _publishers_camera_image[i].publish(img);
         }
     }
 
