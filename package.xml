@@ -13,6 +13,8 @@
   <depend>Boost</depend>
   <depend>OpenCV</depend>
   <depend>cv_bridge</depend>
+  <depend>Spinnaker</depend>
+  <depend>sensor_msgs</depend>
   
 
   <test_depend>ament_lint_auto</test_depend>

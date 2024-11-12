@@ -300,7 +300,9 @@ namespace cam_port_manager
         std::vector<int64_t> my_ids = _cam_ids();
         bool default_detected = false;
 
-        image_transport::ImageTransport it((rclcpp::Node::SharedPtr)this);
+        //image_transport::ImageTransport it((rclcpp::Node::SharedPtr)this);
+        image_transport::ImageTransport it(this->shared_from_this());
+
 
         for (size_t i = 0; i < my_ids.size(); i++)
         {
@@ -322,7 +324,7 @@ namespace cam_port_manager
 
                     cam_found = true;
 
-                    _publishers_camera_image.push_back(it.advertise("/camera_array/" + cam.GetAlias() + "/image_raw", 10));
+                    _publishers_camera_image.push_back(it.advertise("/camera_array/" + cam.GetAlias() + "/image_raw", 10,"compressed"));
 
                     cv::Mat img;
                     _cam_frames.push_back(img);
@@ -428,9 +430,11 @@ namespace cam_port_manager
         for (size_t i = 0; i < _camList.size(); i++)
         {
             imgHeader.frame_id = "cam_" + _cam_aliases().at(i) + "_optical_frame";
-            sensor_msgs::msg::Image img;
-            cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg(img);
-            _publishers_camera_image[i].publish(img);
+            //sensor_msgs::msg::Image img;
+            //cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg(img);
+            //_publishers_camera_image[i].publish(img);
+            auto img = cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg();
+            _publishers_camera_image[i].publish(*img);
         }
     }
 

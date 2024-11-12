@@ -12,6 +12,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(cv_bridge REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 
 # Non ROS Dependencies =============================================
@@ -64,9 +65,9 @@ install(TARGETS
 target_link_libraries(${PROJECT_NAME} ${SPINNAKER_LIB_FILES})
 
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES x86_64 OR x86_32)
-  ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport OpenCV LibUnwind cv_bridge)
+  ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport sensor_msgs OpenCV LibUnwind cv_bridge)
 else()
-  ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport OpenCV cv_bridge)
+  ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport sensor_msgs OpenCV cv_bridge)
 endif()
 
 if(BUILD_TESTING)
