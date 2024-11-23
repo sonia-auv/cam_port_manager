@@ -9,7 +9,7 @@
 namespace cam_port_manager
 {
     CaptureNode::CaptureNode()
-        : rclcpp::Node("cam_port_manager"), _camList(), _publishers_camera_image()
+        : rclcpp::Node("cam_port_manager"), _camList(), _publishers_camera_image(),node_handle(std::shared_ptr<CaptureNode>(this, [](auto *) {})), it(node_handle)
     {
         int mem;
         std::ifstream usb_mem("/sys/module/usbcore/parameters/usbfs_memory_mb");
@@ -301,7 +301,7 @@ namespace cam_port_manager
         bool default_detected = false;
 
         //image_transport::ImageTransport it((rclcpp::Node::SharedPtr)this);
-        image_transport::ImageTransport it(this->shared_from_this());
+        //image_transport::ImageTransport it(this->shared_from_this());
 
 
         for (size_t i = 0; i < my_ids.size(); i++)
