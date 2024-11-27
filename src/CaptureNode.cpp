@@ -324,7 +324,7 @@ namespace cam_port_manager
 
                     cam_found = true;
 
-                    _publishers_camera_image.push_back(it.advertise("/camera_array/" + cam.GetAlias() + "/image_raw", 10,"compressed"));
+                    _publishers_camera_image.push_back(it.advertise("/camera_array/" + cam.GetAlias() + "/image_raw", 1,"compressed"));
 
                     cv::Mat img;
                     _cam_frames.push_back(img);
@@ -447,7 +447,7 @@ namespace cam_port_manager
         {
             cam.BeginAquisition();
         }
-        rclcpp::Rate r(20);
+        rclcpp::Rate r(100);
         while (rclcpp::ok())
         {
             _get_image_matrix();
