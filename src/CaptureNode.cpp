@@ -447,7 +447,7 @@ namespace cam_port_manager
         {
             cam.BeginAquisition();
         }
-        rclcpp::Rate r(100);
+        rclcpp::Rate r(80);
         while (rclcpp::ok())
         {
             _get_image_matrix();
