@@ -61,13 +61,14 @@ namespace cam_port_manager
         unsigned int colsize = pConvertedImage->GetHeight();
 
         cv::Mat img;
+        cv::Mat img2;
         // if (COLOR_)
         img = cv::Mat(colsize + YPadding, rowsize + XPadding, CV_8UC3, pConvertedImage->GetData(), pConvertedImage->GetStride());
         // else
         //     img = Mat(colsize + YPadding, rowsize + XPadding, CV_8UC1, pConvertedImage->GetData(), pConvertedImage->GetStride());
 
-        cv::resize(img, img, cv::Size(600, 400), cv::INTER_LINEAR);
-        return img.clone();
+        cv::resize(img, img2, cv::Size(600, 400), cv::INTER_LINEAR);
+        return img2.clone();
     }
 
     std::string Camera::GetEnumValue(std::string name)

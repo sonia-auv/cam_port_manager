@@ -9,14 +9,14 @@
 namespace cam_port_manager
 {
     CaptureNode::CaptureNode()
-        : rclcpp::Node("cam_port_manager"), _camList(), _publishers_camera_image(),node_handle(std::shared_ptr<CaptureNode>(this, [](auto *) {})), it(node_handle)
+        : rclcpp::Node("cam_port_manager"), _camList(), _publishers_camera_image(),node_handle(std::shared_ptr<CaptureNode>(this, [](auto *) {})),it(node_handle)
     {
         int mem;
         std::ifstream usb_mem("/sys/module/usbcore/parameters/usbfs_memory_mb");
         if (usb_mem)
         {
             usb_mem >> mem;
-            if (mem >= 10000)
+            if (mem >= 1000)
             {
                 RCLCPP_INFO(this->get_logger(), "[ OK ] USB memory: %d MB", mem);
             }
@@ -324,7 +324,7 @@ namespace cam_port_manager
 
                     cam_found = true;
 
-                    _publishers_camera_image.push_back(it.advertise("/camera_array/" + cam.GetAlias() + "/image_raw", 1,"compressed"));
+                    _publishers_camera_image.push_back(it.advertise("/camera_array/" + cam.GetAlias() + "/image_raw", 1));
 
                     cv::Mat img;
                     _cam_frames.push_back(img);
@@ -419,6 +419,8 @@ namespace cam_port_manager
         for (size_t i = 0; i < _camList.size(); i++)
         {
             _cam_frames[i] = _camList.at(i).GetNextFrame();
+            //_cam_frames[i] = _camList.at(i)._get_next_image();
+
         }
     }
 
@@ -426,15 +428,14 @@ namespace cam_port_manager
     {
         std_msgs::msg::Header imgHeader;
         imgHeader.stamp = this->get_clock().get()->now();
-
         for (size_t i = 0; i < _camList.size(); i++)
         {
             imgHeader.frame_id = "cam_" + _cam_aliases().at(i) + "_optical_frame";
-            //sensor_msgs::msg::Image img;
-            //cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg(img);
-            //_publishers_camera_image[i].publish(img);
-            auto img = cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg();
-            _publishers_camera_image[i].publish(*img);
+            sensor_msgs::msg::Image img;
+            cv_bridge::CvImagePtr(imgHeader, "bgr8", _cam_frames[i]).toImageMsg(img);
+            _publishers_camera_image[i].publish(img);
+            //auto img = cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg();
+            //_publishers_camera_image[i].publish(*img);
         }
     }
 
@@ -447,7 +448,7 @@ namespace cam_port_manager
         {
             cam.BeginAquisition();
         }
-        rclcpp::Rate r(80);
+        rclcpp::Rate r(20);
         while (rclcpp::ok())
         {
             _get_image_matrix();

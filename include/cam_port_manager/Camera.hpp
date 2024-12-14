@@ -65,5 +65,6 @@ namespace cam_port_manager
 
         Spinnaker::CameraPtr _pCam;
         std::string _alias;
+       
     };
 }
