@@ -16,7 +16,7 @@ namespace cam_port_manager
         if (usb_mem)
         {
             usb_mem >> mem;
-            if (mem >= 10000)
+            if (mem >= 1000)
             {
                 RCLCPP_INFO(this->get_logger(), "[ OK ] USB memory: %d MB", mem);
             }
