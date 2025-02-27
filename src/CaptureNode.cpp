@@ -431,11 +431,11 @@ namespace cam_port_manager
         for (size_t i = 0; i < _camList.size(); i++)
         {
             imgHeader.frame_id = "cam_" + _cam_aliases().at(i) + "_optical_frame";
-            sensor_msgs::msg::Image img;
-            cv_bridge::CvImagePtr(imgHeader, "bgr8", _cam_frames[i]).toImageMsg(img);
-            _publishers_camera_image[i].publish(img);
-            //auto img = cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg();
-            //_publishers_camera_image[i].publish(*img);
+            //sensor_msgs::msg::Image img;
+            //cv_bridge::CvImagePtr(imgHeader, "bgr8", _cam_frames[i]).toImageMsg(img);
+            //_publishers_camera_image[i].publish(img);
+            auto img = cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg();
+            _publishers_camera_image[i].publish(*img);
         }
     }
 
@@ -448,7 +448,7 @@ namespace cam_port_manager
         {
             cam.BeginAquisition();
         }
-        rclcpp::Rate r(20);
+        rclcpp::Rate r(50);
         while (rclcpp::ok())
         {
             _get_image_matrix();
