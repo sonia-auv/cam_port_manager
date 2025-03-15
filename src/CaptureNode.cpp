@@ -302,7 +302,7 @@ namespace cam_port_manager
 
         //image_transport::ImageTransport it((rclcpp::Node::SharedPtr)this);
         //image_transport::ImageTransport it(this->shared_from_this());
-
+        rmw_qos_profile_t qos = rmw_qos_profile_sensor_data;
 
         for (size_t i = 0; i < my_ids.size(); i++)
         {
@@ -324,7 +324,7 @@ namespace cam_port_manager
 
                     cam_found = true;
 
-                    _publishers_camera_image.push_back(it.advertise("/camera_array/" + cam.GetAlias() + "/image_raw", 1));
+                    _publishers_camera_image.push_back(it.advertise("/camera_array/" + cam.GetAlias() + "/image_raw", qos));
 
                     cv::Mat img;
                     _cam_frames.push_back(img);
