@@ -17,7 +17,7 @@ namespace cam_port_manager
 
     Camera::~Camera()
     {
-        _pCam = NULL;
+        _pCam = nullptr;
     }
 
     void Camera::Init()
@@ -76,7 +76,10 @@ namespace cam_port_manager
         Spinnaker::GenApi::CEnumerationPtr pEnum = _pCam->GetNodeMap().GetNode(name.c_str());
         if (pEnum == nullptr)
         {
-            throw std::invalid_argument(("%s Is not an Enum Parameter!", name.c_str()));
+            std::stringstream ss;
+            ss << name;
+            ss << " Is not an Enum Parameter!";
+            throw std::invalid_argument(ss.str());
         }
         return std::string(pEnum->GetEntry(pEnum->GetIntValue())->GetDisplayName());
     }
@@ -116,7 +119,10 @@ namespace cam_port_manager
         Spinnaker::GenApi::CFloatPtr pFloat = _pCam->GetNodeMap().GetNode(name.c_str());
         if (pFloat == nullptr)
         {
-            throw std::invalid_argument(("%s Is not a Float Parameter!", name.c_str()));
+            std::stringstream ss;
+            ss << name;
+            ss << " Is not a Float Parameter!";
+            throw std::invalid_argument(ss.str());
         }
         return pFloat->GetValue();
     }
@@ -138,7 +144,10 @@ namespace cam_port_manager
         Spinnaker::GenApi::CIntegerPtr pInt = _pCam->GetNodeMap().GetNode(name.c_str());
         if (pInt == nullptr)
         {
-            throw std::invalid_argument(("%s Is not an Integer Parameter!", name.c_str()));
+            std::stringstream ss;
+            ss << name;
+            ss << " Is not a Integer Parameter!";
+            throw std::invalid_argument(ss.str());
         }
         return pInt->GetValue();
     }
@@ -160,7 +169,10 @@ namespace cam_port_manager
         Spinnaker::GenApi::CBooleanPtr pBool = _pCam->GetNodeMap().GetNode(name.c_str());
         if (pBool == nullptr)
         {
-            throw std::invalid_argument(("%s Is not a Boolean Parameter!", name.c_str()));
+            std::stringstream ss;
+            ss << name;
+            ss << " Is not a Boolean Parameter!";
+            throw std::invalid_argument(ss.str());
         }
         return pBool->GetValue();
     }
@@ -174,6 +186,7 @@ namespace cam_port_manager
             return false;
         }
         pBool->SetValue(value);
+        return true;
     }
 
     std::string Camera::GetStringValue(std::string name)
@@ -181,14 +194,17 @@ namespace cam_port_manager
         Spinnaker::GenApi::CStringPtr pString = _pCam->GetNodeMap().GetNode(name.c_str());
         if (pString == nullptr)
         {
-            throw std::invalid_argument(("%s Is not a String Parameter!", name.c_str()));
+            std::stringstream ss;
+            ss << name;
+            ss << " Is not a String Parameter!";
+            throw std::invalid_argument(ss.str());
         }
         return std::string(pString->GetValue());
     }
 
     std::string Camera::GetID()
     {
-        std::string camera_id = std::string(_pCam->GetUniqueID());
+        std::string camera_id = std::string(_pCam->GetDeviceID());
         std::string serial_nb = "SRL_";
 
         size_t position = camera_id.find(serial_nb) + 4;

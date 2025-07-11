@@ -67,15 +67,15 @@ namespace cam_port_manager
         inline int _exposure_time() { return this->get_parameter("exposure_time").as_int(); }
         inline bool _is_max_rate() { return this->get_parameter("is_max_rate").as_bool(); }
 
-        Spinnaker::SystemPtr _pSystem;
-        rclcpp::Node::SharedPtr node_handle;
         std::vector<Camera> _camList;
+        std::vector<image_transport::Publisher> _publishers_camera_image;
+        rclcpp::Node::SharedPtr node_handle;
+        image_transport::ImageTransport it;
+        Spinnaker::SystemPtr _pSystem;
         std::vector<cv::Mat> _cam_frames;
         std::vector<std::string> _timestamps;
         std::vector<sensor_msgs::msg::Image::SharedPtr> _img_msgs;
         std::vector<sensor_msgs::msg::CameraInfo::SharedPtr> _cam_info_msgs;
-        image_transport::ImageTransport it;
-        std::vector<image_transport::Publisher> _publishers_camera_image;
 
         std::thread _runner;
         std::mutex _wait_lock;
