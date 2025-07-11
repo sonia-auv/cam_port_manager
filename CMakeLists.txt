@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.22)
 project(cam_port_manager)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -36,9 +36,18 @@ find_package ( Boost COMPONENTS filesystem system serialization log REQUIRED )
 include_directories(include)
 include_directories(${SPINNAKER_INCLUDE_DIR})
 
+<<<<<<< Updated upstream
 file(GLOB SOURCES src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+=======
+file(GLOB_RECURSE SOURCES src/**.cpp)
+
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC include)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SPINNAKER_INCLUDE_DIR})
+>>>>>>> Stashed changes
 
 link_directories(${SPINNAKER_LIB_DIR})
 
@@ -67,7 +76,7 @@ target_link_libraries(${PROJECT_NAME} ${SPINNAKER_LIB_FILES})
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES x86_64 OR x86_32)
   ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport sensor_msgs OpenCV LibUnwind cv_bridge)
 else()
-  ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport sensor_msgs OpenCV cv_bridge)
+  ament_target_dependencies(${PROJECT_NAME} PUBLIC rclcpp Boost image_transport sensor_msgs OpenCV cv_bridge)
 endif()
 
 if(BUILD_TESTING)
