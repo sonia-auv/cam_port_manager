@@ -50,9 +50,9 @@ namespace cam_port_manager
     {
         Spinnaker::ImagePtr pImg = _get_next_image();
         Spinnaker::ImagePtr pConvertedImage;
-
+        Spinnaker::ImageProcessor processor;
         // if (COLOR_)
-        pConvertedImage = pImg->Convert(Spinnaker::PixelFormat_BGR8); //, NEAREST_NEIGHBOR);
+        pConvertedImage = processor.Convert(pImg, Spinnaker::PixelFormat_BGR8);
         // else
         //     convertedImage = pImage->Convert(PixelFormat_Mono8); //, NEAREST_NEIGHBOR);
         unsigned int XPadding = pConvertedImage->GetXPadding();
