@@ -70,7 +70,7 @@ target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Wpedantic -Werror)
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES x86_64 OR x86_32)
   ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport sensor_msgs OpenCV LibUnwind cv_bridge)
 else()
-  ament_target_dependencies(${PROJECT_NAME} PUBLIC rclcpp Boost image_transport sensor_msgs OpenCV cv_bridge)
+  ament_target_dependencies(${PROJECT_NAME} rclcpp Boost image_transport sensor_msgs OpenCV cv_bridge)
 endif()
 
 if(BUILD_TESTING)
