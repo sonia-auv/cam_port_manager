@@ -8,7 +8,7 @@
     cam_aliases:
       - front
       - bottom
-    master_cam_id: 19208686
+    master_cam_id: 19208682
 
     exposure_time: 0
 
