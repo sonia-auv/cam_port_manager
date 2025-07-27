@@ -17,7 +17,7 @@ namespace cam_port_manager
 
     Camera::~Camera()
     {
-        _pCam = nullptr;
+        //_pCam = nullptr;
     }
 
     void Camera::Init()
