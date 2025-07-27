@@ -57,7 +57,7 @@ namespace cam_port_manager
         }
         
     }
-    CaptureNode::kill()
+    void CaptureNode::kill()
     {
         for(Camera cam: _camList){
             cam.EndAquisition();
