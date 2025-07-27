@@ -463,7 +463,6 @@ namespace cam_port_manager
         for (Camera cam : _camList)
         {
             cam.EndAquisition();
-            cam.Deinit();
             
         }
     }
