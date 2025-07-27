@@ -49,7 +49,6 @@ namespace cam_port_manager
         {
             _pSystem->ReleaseInstance();
         }
-        _pSystem = nullptr;
         
     }
     void CaptureNode::kill()
@@ -467,7 +466,7 @@ namespace cam_port_manager
         {
             cam.EndAquisition();
             cam.Deinit();
-            
+
         }
     }
 }
