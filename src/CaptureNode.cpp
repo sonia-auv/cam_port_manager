@@ -49,7 +49,7 @@ namespace cam_port_manager
         {
             _pSystem->ReleaseInstance();
         }
-        _pSystem = NULL;
+        _pSystem = nullptr;
         
     }
     void CaptureNode::kill()
