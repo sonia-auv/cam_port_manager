@@ -54,7 +54,7 @@ namespace cam_port_manager
     void CaptureNode::kill()
     {
         for(Camera cam: _camList){
-            cam.EndAquisition();
+            //cam.EndAquisition();
             cam.Deinit();
             cam.~Camera();
         }
@@ -465,8 +465,7 @@ namespace cam_port_manager
         for (Camera cam : _camList)
         {
             cam.EndAquisition();
-            cam.Deinit();
-
+            
         }
     }
 }
