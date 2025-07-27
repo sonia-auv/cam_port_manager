@@ -45,14 +45,26 @@ namespace cam_port_manager
 
     CaptureNode::~CaptureNode()
     {
+        for(Camera cam: _camList){
+            cam.EndAquisition();
+            cam.Deinit();
+            cam.~Camera();
+        }
+
         if (_pSystem != nullptr)
         {
             _pSystem->ReleaseInstance();
         }
-        for (Camera cam : _camList)
-        {
+        
+    }
+    CaptureNode::kill()
+    {
+        for(Camera cam: _camList){
+            cam.EndAquisition();
+            cam.Deinit();
             cam.~Camera();
         }
+        
     }
 
     void CaptureNode::InitCameras()
@@ -456,9 +468,9 @@ namespace cam_port_manager
             r.sleep();
         }
         RCLCPP_INFO(this->get_logger(), "Stop Aquisition");
-        for (Camera cam : _camList)
+        /*for (Camera cam : _camList)
         {
             cam.EndAquisition();
-        }
+        }*/
     }
 }

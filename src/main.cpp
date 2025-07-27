@@ -8,6 +8,7 @@ int main(int argc, char const *argv[])
     auto capture_node = std::make_shared<cam_port_manager::CaptureNode>();
     capture_node->InitCameras();
     rclcpp::spin(capture_node);
+    capture_node->kill();
     
     rclcpp::shutdown();
 
