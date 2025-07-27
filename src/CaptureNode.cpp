@@ -463,9 +463,11 @@ namespace cam_port_manager
             r.sleep();
         }
         RCLCPP_INFO(this->get_logger(), "Stop Aquisition");
-        /*for (Camera cam : _camList)
+        for (Camera cam : _camList)
         {
             cam.EndAquisition();
-        }*/
+            cam.Deinit();
+            
+        }
     }
 }
