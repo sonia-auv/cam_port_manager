@@ -45,20 +45,20 @@ namespace cam_port_manager
 
     CaptureNode::~CaptureNode()
     {
-        if (_pSystem != nullptr)
-        {
-            _pSystem->ReleaseInstance();
-        }
+        
+        _pSystem = nullptr;
         
     }
     void CaptureNode::kill()
     {
         for(Camera cam: _camList){
-            //cam.EndAquisition();
+            cam.EndAquisition();
             cam.Deinit();
-            cam.~Camera();
         }
-        
+        if (_pSystem != nullptr)
+        {
+            _pSystem->ReleaseInstance();
+        }
     }
 
     void CaptureNode::InitCameras()
@@ -465,6 +465,7 @@ namespace cam_port_manager
         for (Camera cam : _camList)
         {
             cam.EndAquisition();
+            cam.Deinit();
             
         }
     }
