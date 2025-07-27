@@ -46,8 +46,6 @@ namespace cam_port_manager
     CaptureNode::~CaptureNode()
     {
         
-        _pSystem = nullptr;
-        
     }
     void CaptureNode::kill()
     {
