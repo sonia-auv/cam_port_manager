@@ -21,7 +21,6 @@ namespace cam_port_manager
          * The Camera needs to be initialized before it can be used.
          */
         void Init();
-        void kill();
 
         /**
          * @brief Deinitize the Camera

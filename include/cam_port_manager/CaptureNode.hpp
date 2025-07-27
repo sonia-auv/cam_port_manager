@@ -17,6 +17,7 @@ namespace cam_port_manager
         ~CaptureNode();
 
         void InitCameras();
+        void kill();
 
     private:
         void _load_params();
