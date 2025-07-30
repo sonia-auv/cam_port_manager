@@ -78,6 +78,7 @@ namespace cam_port_manager
         std::vector<sensor_msgs::msg::Image::SharedPtr> _img_msgs;
         std::vector<sensor_msgs::msg::CameraInfo::SharedPtr> _cam_info_msgs;
 
+        std::atomic<bool> running{true};
         std::thread _runner;
         std::mutex _wait_lock;
         std::condition_variable _wait_start;

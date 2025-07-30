@@ -5,11 +5,12 @@
 #include <boost/filesystem.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include "image_transport/image_transport.hpp"
+#include <boost/log/trivial.hpp>
 
 namespace cam_port_manager
 {
     CaptureNode::CaptureNode()
-        : rclcpp::Node("cam_port_manager"), _camList(), _publishers_camera_image(),node_handle(std::shared_ptr<CaptureNode>(this, [](auto *) {})),it(node_handle)
+        : rclcpp::Node("cam_port_manager"), _camList(), _publishers_camera_image(), node_handle(std::shared_ptr<CaptureNode>(this, [](auto *) {})),it(node_handle)
     {
         int mem;
         std::ifstream usb_mem("/sys/module/usbcore/parameters/usbfs_memory_mb");
@@ -37,6 +38,7 @@ namespace cam_port_manager
         _load_params();
 
         RCLCPP_INFO(this->get_logger(), "Creating System instance...");
+        
         _pSystem = Spinnaker::System::GetInstance();
         _load_cameras();
 
@@ -45,18 +47,25 @@ namespace cam_port_manager
 
     CaptureNode::~CaptureNode()
     {
-        
-    }
-    void CaptureNode::kill()
-    {
+        running = false;
+        if(_runner.joinable())
+            _runner.join();
         for(Camera cam: _camList){
             cam.EndAquisition();
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             cam.Deinit();
+            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         }
-        if (_pSystem != nullptr)
+        _camList.clear();
+        try
         {
             _pSystem->ReleaseInstance();
         }
+        catch(const std::exception& e)
+        {
+            BOOST_LOG_TRIVIAL(info) << "destroyed";
+        }
+        _pSystem = nullptr;
     }
 
     void CaptureNode::InitCameras()
@@ -66,8 +75,11 @@ namespace cam_port_manager
             RCLCPP_INFO(this->get_logger(), "Initializing Camera %s", cam.GetAlias().c_str());
             cam.Init();
             cam.BeginAquisition();
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             cam.EndAquisition();
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             cam.Deinit();
+            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
             cam.Init();
             try
             {
@@ -453,17 +465,16 @@ namespace cam_port_manager
             cam.BeginAquisition();
         }
         rclcpp::Rate r(25);
-        while (rclcpp::ok())
+        while (running)
         {
             _get_image_matrix();
             _export_to_ros();
             r.sleep();
         }
         RCLCPP_INFO(this->get_logger(), "Stop Aquisition");
-        for (Camera cam : _camList)
-        {
-            cam.EndAquisition();
+        //for (Camera cam : _camList)
+        //{
             
-        }
+        //}
     }
 }
