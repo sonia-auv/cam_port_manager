@@ -63,7 +63,7 @@ namespace cam_port_manager
         }
         catch(const std::exception& e)
         {
-            BOOST_LOG_TRIVIAL(info) << "destroyed";
+            BOOST_LOG_TRIVIAL(info) << "System could not release instance";
         }
         _pSystem = nullptr;
     }
@@ -472,9 +472,5 @@ namespace cam_port_manager
             r.sleep();
         }
         RCLCPP_INFO(this->get_logger(), "Stop Aquisition");
-        //for (Camera cam : _camList)
-        //{
-            
-        //}
     }
 }
