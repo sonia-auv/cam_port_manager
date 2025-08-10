@@ -1,7 +1,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include "cam_port_manager/CaptureNode.hpp"
 
-
 int main(int argc, char const *argv[])
 {
     rclcpp::init(argc, argv);
