@@ -1,6 +1,6 @@
 # cam_port_manager
 
-*description*
+The project opens up a connection with 1 or 2 **Flir Chameleon3** cameras. The feed from the camera is transported using **image_transport** on the **ROS2** network. **image_transport** handles the creation of the required topics and publishes, raw feed, compressed feed and information from the camera.
 
 ---
 
@@ -21,13 +21,14 @@
 ### External packages
 
 * `Boost`
+* `OpenCV`
 * `Spinnaker SDK`
 
 ---
 
 ## Node
 
-* Name: ``
+* Name: `cam_provider`
 * Port Name: `/dev/CAM0`
 
 ---
@@ -72,5 +73,6 @@ ros2 param list /cam_provider
 ## References
 
 * [Spinnaker SDK](https://www.teledynevisionsolutions.com/products/spinnaker-sdk/?model=Spinnaker%20SDK&vertical=machine%20vision&segment=iis)
+* [Flir Chameleon3](https://www.teledynevisionsolutions.com/en-ca/products/chameleon3-usb3/?model=CM3-U3-31S4C-CS&vertical=machine%20vision&segment=iis)
 
 ---
