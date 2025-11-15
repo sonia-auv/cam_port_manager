@@ -15,18 +15,18 @@ fi
 
 BITS=$1
 
-GENTL_SETUP_SCRIPT="setup_flir_gentl_$BITS.sh"
+GENTL_SETUP_SCRIPT="setup_spinnaker_gentl_$BITS.sh"
 GENTL_SETUP_PATH="/etc/profile.d/$GENTL_SETUP_SCRIPT"
-CTI_PATH="/opt/spinnaker/lib/flir-gentl"
-CTI_FILE_PATH="${CTI_PATH}/FLIR_GenTL.cti"
+CTI_PATH="/opt/spinnaker/lib/spinnaker-gentl"
+CTI_FILE_PATH="${CTI_PATH}/Spinnaker_GenTL.cti"
 
-FLIR_GENTL_VAR_NAME="FLIR_GENTL${BITS}_CTI"
+SPINNAKER_GENTL_VAR_NAME="SPINNAKER_GENTL${BITS}_CTI"
 GENTL_VAR_NAME="GENICAM_GENTL${BITS}_PATH"
 GENTL_VAR=\$${GENTL_VAR_NAME}
 
 cat << EOF > $GENTL_SETUP_PATH
 #!/bin/sh
-export $FLIR_GENTL_VAR_NAME=$CTI_FILE_PATH
+export $SPINNAKER_GENTL_VAR_NAME=$CTI_FILE_PATH
 if [ -d $CTI_PATH ]; then
     if [ -z $GENTL_VAR ]; then
         export $GENTL_VAR_NAME=$CTI_PATH
@@ -37,6 +37,6 @@ fi
 EOF
 
 echo "$GENTL_SETUP_SCRIPT has been added to /etc/profile.d"
-echo "The $FLIR_GENTL_VAR_NAME and $GENTL_VAR_NAME environment variables will be updated every time a user logs in."
-echo "To use the FLIR GenTL producer in the current session, you can update the $FLIR_GENTL_VAR_NAME and $GENTL_VAR_NAME environment variables by running:"
+echo "The $SPINNAKER_GENTL_VAR_NAME and $GENTL_VAR_NAME environment variables will be updated every time a user logs in."
+echo "To use the Spinnaker GenTL producer in the current session, you can update the $SPINNAKER_GENTL_VAR_NAME and $GENTL_VAR_NAME environment variables by running:"
 echo "  source $GENTL_SETUP_PATH $BITS"

@@ -67,6 +67,7 @@ UdevFile="/etc/udev/rules.d/40-flir-spinnaker.rules"
 echo
 echo "Writing the udev rules file...";
 echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"1e10\", GROUP=\"$grpname\"" 1>>$UdevFile
+echo "SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"1724\", GROUP=\"$grpname\"" 1>>$UdevFile
 
 echo "Do you want to restart the udev daemon?"
 echo -n "$MY_YESNO_PROMPT"

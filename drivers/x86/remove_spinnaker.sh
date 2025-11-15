@@ -30,31 +30,5 @@ dpkg -l | grep 'libspinnaker.*-dev' | awk '{print $2}' | xargs -n1 -r sudo dpkg 
 dpkg -l | grep 'libspinnaker.*' | awk '{print $2}' | xargs -n1 -r sudo dpkg -P
 dpkg -l | grep 'libgentl.*' | awk '{print $2}' | xargs -n1 -r sudo dpkg -P
 
-echo "Removing udev rules file..."
-
-if [ -e "/etc/udev/rules.d/40-flir-spinnaker.rules" ]
-then
-    sudo rm /etc/udev/rules.d/40-flir-spinnaker.rules
-fi
-
-if [ -e "/etc/profile.d/setup_spinnaker_paths.sh" ]
-then
-    echo "Removing Spinnaker paths from system path..."
-    sudo rm /etc/profile.d/setup_spinnaker_paths.sh
-fi
-
-ARCH=$(ls libspinnaker_* | grep -oP '[0-9]_\K.*(?=.deb)' || [[ $? == 1 ]])
-if [ "$ARCH" = "amd64" ]; then
-    BITS=64
-elif [ "$ARCH" = "i386" ]; then
-    BITS=32
-fi
-
-if [ -e "/etc/profile.d/setup_flir_gentl_$BITS.sh" ]
-then
-    echo "Removing FLIR GenTL producer from GENICAM_GENTL${BITS}_PATH..."
-    sudo rm /etc/profile.d/setup_flir_gentl_$BITS.sh
-fi
-
 echo "Uninstallation complete."
 exit 0

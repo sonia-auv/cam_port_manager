@@ -50,10 +50,10 @@ elif [ "$ARCH" = "armhf" ]; then
     BITS=32
 fi
 
-if [ -e "/etc/profile.d/setup_flir_gentl_$BITS.sh" ]
+if [ -e "/etc/profile.d/setup_spinnaker_gentl_$BITS.sh" ]
 then
     echo "Removing FLIR GenTL producer from GENICAM_GENTL${BITS}_PATH..."
-    sudo rm /etc/profile.d/setup_flir_gentl_$BITS.sh
+    sudo rm /etc/profile.d/setup_spinnaker_gentl_$BITS.sh
 fi
 
 echo "Uninstallation complete."
