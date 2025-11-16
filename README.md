@@ -24,6 +24,11 @@ The project opens up a connection with 1 or 2 **Flir Chameleon3** cameras. The f
 * `OpenCV`
 * `Spinnaker SDK`
 
+#### Spinnaker SDK Installation
+**cam_port_manager** requires Spinnaker SDK to build and run, the project contains all the installation files for spinnaker version `4.2` in `drivers/`.
+
+From within the folder `drivers/`, chose the right subfolder, depending on the archetecture of the system used: `x86` or `arm64`. Follow the instructions in the `README.md` placed in each of the folders for the full installation of spinnaker.
+
 ---
 
 ## Node
