@@ -1,4 +1,4 @@
-/cam_port_manager:
+/cam_provider:
   ros__parameters:
     # CatureNode Params
     # save_path: "/home/sonia/ssd/camera_data/"
