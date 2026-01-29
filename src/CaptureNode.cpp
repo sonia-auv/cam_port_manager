@@ -462,7 +462,6 @@ namespace cam_port_manager
             //cv_bridge::CvImagePtr(imgHeader, "bgr8", _cam_frames[i]).toImageMsg(img);
             //_publishers_camera_image[i].publish(img);
             auto img = cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg();
-            _node_status.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
             _publishers_camera_image[i].publish(*img);
         }
     }
