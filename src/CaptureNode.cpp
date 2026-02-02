@@ -12,6 +12,13 @@ namespace cam_port_manager
     CaptureNode::CaptureNode()
         : rclcpp::Node("cam_provider"), _camList(), _publishers_camera_image(), node_handle(std::shared_ptr<CaptureNode>(this, [](auto *) {})), it(node_handle)
     {
+        _pub_node_status = this->create_publisher<sonia_common_ros2::msg::NodeStatus>("/system_monitor/node_status", 1);
+        _timerNodeStatus = this->create_wall_timer(500ms, std::bind(&CaptureNode::_publishStatus, this));
+
+        _node_status.node_name = this->get_name();
+        _node_status.quality = sonia_common_ros2::msg::NodeStatus::Q_OK;
+        _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_INITIALIZING;
+
         int mem;
         std::ifstream usb_mem("/sys/module/usbcore/parameters/usbfs_memory_mb");
         if (usb_mem)
@@ -66,6 +73,10 @@ namespace cam_port_manager
             BOOST_LOG_TRIVIAL(info) << "System could not release instance";
         }
         _pSystem = nullptr;
+    }
+    void CaptureNode::_publishStatus(){
+        _node_status.stamp = this->now();
+        publisher_node_status->publish(_node_status);
     }
 
     void CaptureNode::InitCameras()
@@ -459,6 +470,7 @@ namespace cam_port_manager
     {
         std::unique_lock<std::mutex> lk(_wait_lock);
         _wait_start.wait(lk);
+        _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_RUNNING;
         RCLCPP_INFO(this->get_logger(), "Starting Aquisition");
         for (Camera cam : _camList)
         {

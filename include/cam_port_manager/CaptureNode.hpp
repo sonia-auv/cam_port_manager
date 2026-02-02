@@ -4,6 +4,7 @@
 #include "cam_port_manager/Camera.hpp"
 #include <opencv2/opencv.hpp>
 #include <image_transport/image_transport.hpp>
+#include <sonia_common_ros2/msg/node_status.hpp>
 #include <sensor_msgs/msg/image.hpp>
 #include <condition_variable>
 #include <mutex>
@@ -24,6 +25,7 @@ namespace cam_port_manager
         void _camera_info_setup(const Camera &cam);
         void _get_image_matrix();
         void _export_to_ros();
+        void _publishStatus();
 
         void _run();
 
@@ -76,10 +78,14 @@ namespace cam_port_manager
         std::vector<std::string> _timestamps;
         std::vector<sensor_msgs::msg::Image::SharedPtr> _img_msgs;
         std::vector<sensor_msgs::msg::CameraInfo::SharedPtr> _cam_info_msgs;
+        rclcpp::Publisher<sonia_common_ros2::msg::NodeStatus>::SharedPtr _pub_node_status;
+
+        rclcpp::TimerBase::SharedPtr _timerNodeStatus;
 
         std::atomic<bool> running{true};
         std::thread _runner;
         std::mutex _wait_lock;
         std::condition_variable _wait_start;
+        sonia_common_ros2::msg::NodeStatus _node_status;
     };
 } // namespace cam_port_manager

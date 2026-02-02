@@ -10,6 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
   <depend>rclcpp</depend>
   <depend>image_transport</depend>
+  <depend>sonia_common_ros2</depend>
   <depend>Boost</depend>
   <depend>OpenCV</depend>
   <depend>cv_bridge</depend>

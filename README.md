@@ -18,6 +18,10 @@ The project opens up a connection with 1 or 2 **Flir Chameleon3** cameras. The f
 * `cv_bridge`
 * `sensor_msgs`
 
+### Sonia packages
+
+* `sonia_common_ros2`
+
 ### External packages
 
 * `Boost`
@@ -35,6 +39,13 @@ From within the folder `drivers/`, chose the right subfolder, depending on the a
 
 * Name: `cam_provider`
 * Port Name: `/dev/CAM0`
+---
+
+## Registered Topics / Services / Actions
+
+| Type            | Name                           | Direction       | Message/Service Type                | Description                                               |
+| --------------- | ------------------------------ | ----------------| ----------------------------------- | --------------------------------------------------------  |
+| Topic           | `/system_monitor/node_status`  | Published       | `sonia_common_ros2/msg/NodeStatus`  | Message contains information of the state of a node       |
 
 ---
 ## Build Instructions
@@ -77,6 +88,7 @@ ros2 param list /cam_provider
 
 ## References
 
+* [sonia_common_ros2](https://github.com/sonia-auv/sonia_common_ros2)
 * [Spinnaker SDK](https://www.teledynevisionsolutions.com/products/spinnaker-sdk/?model=Spinnaker%20SDK&vertical=machine%20vision&segment=iis)
 * [Flir Chameleon3](https://www.teledynevisionsolutions.com/en-ca/products/chameleon3-usb3/?model=CM3-U3-31S4C-CS&vertical=machine%20vision&segment=iis)
 
