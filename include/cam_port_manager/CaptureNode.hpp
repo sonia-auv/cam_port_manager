@@ -71,12 +71,9 @@ namespace cam_port_manager
 
         std::vector<Camera> _camList;
         std::vector<image_transport::Publisher> _publishers_camera_image;
-        rclcpp::Node::SharedPtr node_handle;
-        image_transport::ImageTransport it;
         Spinnaker::SystemPtr _pSystem;
         std::vector<cv::Mat> _cam_frames;
-        std::vector<std::string> _timestamps;
-        std::vector<sensor_msgs::msg::Image::SharedPtr> _img_msgs;
+        
         std::vector<sensor_msgs::msg::CameraInfo::SharedPtr> _cam_info_msgs;
         rclcpp::Publisher<sonia_common_ros2::msg::NodeStatus>::SharedPtr _pub_node_status;
 
