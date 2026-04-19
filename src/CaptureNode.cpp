@@ -7,10 +7,11 @@
 #include "image_transport/image_transport.hpp"
 #include <boost/log/trivial.hpp>
 
+using namespace std::chrono_literals;
 namespace cam_port_manager
 {
     CaptureNode::CaptureNode()
-        : rclcpp::Node("cam_provider"), _camList(), _publishers_camera_image(), node_handle(std::shared_ptr<CaptureNode>(this, [](auto *) {})), it(node_handle)
+        : rclcpp::Node("cam_provider"), _camList(), _publishers_camera_image()
     {
         _pub_node_status = this->create_publisher<sonia_common_ros2::msg::NodeStatus>("/system_monitor/node_status", 1);
         _timerNodeStatus = this->create_wall_timer(500ms, std::bind(&CaptureNode::_publishStatus, this));
@@ -76,7 +77,7 @@ namespace cam_port_manager
     }
     void CaptureNode::_publishStatus(){
         _node_status.stamp = this->now();
-        publisher_node_status->publish(_node_status);
+        _pub_node_status->publish(_node_status);
     }
 
     void CaptureNode::InitCameras()
@@ -316,6 +317,10 @@ namespace cam_port_manager
     {
         RCLCPP_INFO(this->get_logger(), "Retrieving List of Cameras...");
         Spinnaker::CameraList system_cameras = _pSystem->GetCameras();
+        std::vector<sensor_msgs::msg::Image::SharedPtr> _img_msgs;
+        rmw_qos_profile_t qos = rmw_qos_profile_sensor_data;
+        rclcpp::Node::SharedPtr node_handle(std::shared_ptr<CaptureNode>(this, [](auto *) {}));
+        image_transport::ImageTransport it(node_handle);
 
         if (system_cameras.GetSize() == 0)
         {
@@ -326,10 +331,6 @@ namespace cam_port_manager
 
         std::vector<int64_t> my_ids = _cam_ids();
         bool default_detected = false;
-
-        //image_transport::ImageTransport it((rclcpp::Node::SharedPtr)this);
-        //image_transport::ImageTransport it(this->shared_from_this());
-        rmw_qos_profile_t qos = rmw_qos_profile_sensor_data;
 
         for (size_t i = 0; i < my_ids.size(); i++)
         {
@@ -441,28 +442,18 @@ namespace cam_port_manager
         _cam_info_msgs.push_back(ci_msg);
     }
 
-    void CaptureNode::_get_image_matrix()
-    {
-        for (size_t i = 0; i < _camList.size(); i++)
-        {
-            _cam_frames[i] = _camList.at(i).GetNextFrame();
-            //_cam_frames[i] = _camList.at(i)._get_next_image();
-
-        }
-    }
-
     void CaptureNode::_export_to_ros()
     {
         std_msgs::msg::Header imgHeader;
         imgHeader.stamp = this->get_clock().get()->now();
         for (size_t i = 0; i < _camList.size(); i++)
         {
+            _cam_frames[i] = _camList.at(i).GetNextFrame(); 
+
             imgHeader.frame_id = "cam_" + _cam_aliases().at(i) + "_optical_frame";
-            //sensor_msgs::msg::Image img;
-            //cv_bridge::CvImagePtr(imgHeader, "bgr8", _cam_frames[i]).toImageMsg(img);
-            //_publishers_camera_image[i].publish(img);
+          
             auto img = cv_bridge::CvImage(imgHeader, "bgr8", _cam_frames[i]).toImageMsg();
-            _publishers_camera_image[i].publish(*img);
+            _publishers_camera_image[i].publish(img);
         }
     }
 
@@ -472,14 +463,13 @@ namespace cam_port_manager
         _wait_start.wait(lk);
         _node_status.state = sonia_common_ros2::msg::NodeStatus::STATE_RUNNING;
         RCLCPP_INFO(this->get_logger(), "Starting Aquisition");
-        for (Camera cam : _camList)
+        for (Camera &cam : _camList)
         {
             cam.BeginAquisition();
         }
         rclcpp::Rate r(35);
-        while (running)
+        while (rclcpp::ok() && running)
         {
-            _get_image_matrix();
             _export_to_ros();
             r.sleep();
         }

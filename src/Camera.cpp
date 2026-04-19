@@ -51,24 +51,18 @@ namespace cam_port_manager
         Spinnaker::ImagePtr pImg = _get_next_image();
         Spinnaker::ImagePtr pConvertedImage;
         Spinnaker::ImageProcessor processor;
-        // if (COLOR_)
+
         pConvertedImage = processor.Convert(pImg, Spinnaker::PixelFormat_BGR8);
-        // else
-        //     convertedImage = pImage->Convert(PixelFormat_Mono8); //, NEAREST_NEIGHBOR);
+   
         unsigned int XPadding = pConvertedImage->GetXPadding();
         unsigned int YPadding = pConvertedImage->GetYPadding();
         unsigned int rowsize = pConvertedImage->GetWidth();
         unsigned int colsize = pConvertedImage->GetHeight();
 
-        cv::Mat img;
-        cv::Mat img2;
-        // if (COLOR_)
-        img = cv::Mat(colsize + YPadding, rowsize + XPadding, CV_8UC3, pConvertedImage->GetData(), pConvertedImage->GetStride());
-        // else
-        //     img = Mat(colsize + YPadding, rowsize + XPadding, CV_8UC1, pConvertedImage->GetData(), pConvertedImage->GetStride());
+        cv::Mat img (colsize + YPadding, rowsize + XPadding, CV_8UC3, pConvertedImage->GetData(), pConvertedImage->GetStride());
 
-        cv::resize(img, img2, cv::Size(600, 400), cv::INTER_LINEAR);
-        return img2.clone();
+        cv::resize(img, img, cv::Size(600, 400), cv::INTER_LINEAR);
+        return img.clone();
     }
 
     std::string Camera::GetEnumValue(std::string name)
